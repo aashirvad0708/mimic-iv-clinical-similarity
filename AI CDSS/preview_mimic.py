@@ -19,8 +19,6 @@ important_tables = [
     #"d_labitems.csv.gz",
     #"d_icd_procedures.csv.gz",
     #"d_labitems.csv.gz",
-    #"emar.csv.gz",
-    "emar_detail.csv.gz",
     #"hcpcsevents.csv.gz",
     #"omr.csv.gz",
     #"poe.csv.gz",
@@ -156,6 +154,73 @@ def preview_table(file_path: str, sample_limit: int = 25, open_html: bool = True
     except Exception as e:
         print("Error:", e)
 
+def top_labs_preview(limit: int = 50, open_html: bool = True):
+
+    labevents_path = os.path.join(HOSP_PATH, "labevents.csv.gz")
+    labdict_path = os.path.join(HOSP_PATH, "d_labitems.csv.gz")
+
+    print("\n" + "=" * 80)
+    print("TOP LAB TESTS (MOST FREQUENTLY ORDERED)")
+    print("=" * 80)
+
+    query = f"""
+    WITH lab_counts AS (
+
+        SELECT
+            itemid,
+            COUNT(*) AS total_events,
+            COUNT(DISTINCT subject_id) AS patient_count,
+            COUNT(valuenum) AS numeric_results
+
+        FROM '{labevents_path}'
+
+        WHERE itemid IS NOT NULL AND valuenum != "NaN"
+
+        GROUP BY itemid
+
+        ORDER BY patient_count DESC
+
+        LIMIT {limit}
+
+    )
+
+    SELECT
+
+        lc.itemid,
+        dl.label,
+        dl.fluid,
+        dl.category,
+        lc.patient_count,
+        lc.total_events,
+        lc.numeric_results
+
+    FROM lab_counts lc
+
+    JOIN '{labdict_path}' dl
+    ON lc.itemid = dl.itemid
+
+    ORDER BY lc.patient_count DESC
+    """
+
+    df = con.execute(query).df()
+
+    print("\nTOP LABS:")
+    print(df.to_string(index=False))
+
+    out_file = os.path.join(OUT_DIR, "top_50_labs.html")
+
+    write_html_preview(
+        df,
+        out_file,
+        title="Top 50 Most Frequent Lab Tests"
+    )
+
+    print("\nHTML PREVIEW:")
+    print(f"Wrote: {out_file}")
+
+    if open_html:
+        open_in_browser(out_file)
+
 if __name__ == "__main__":
     # Set False if you don't want it to auto-open a browser tab each time.
     AUTO_OPEN = True
@@ -163,3 +228,5 @@ if __name__ == "__main__":
     for table in important_tables:
         full_path = os.path.join(HOSP_PATH, table)
         preview_table(full_path, sample_limit=25, open_html=AUTO_OPEN)
+
+    top_labs_preview(limit=50, open_html=AUTO_OPEN)
