@@ -42,7 +42,9 @@ FROM procedures_icd p
 LEFT JOIN d_icd_procedures d 
     ON p.icd_code = d.icd_code 
     AND p.icd_version = d.icd_version
-GROUP BY p.subject_id, p.hadm_id;
+GROUP BY p.subject_id, p.hadm_id
+-- FILTER: Only keep hadm_id with at least one procedure
+HAVING COUNT(*) > 0;
 
 -- Step 2: Procedures - ENGINEERED features
 CREATE OR REPLACE TABLE procedures_features AS
@@ -80,7 +82,9 @@ FROM procedures_icd p
 LEFT JOIN d_icd_procedures d 
     ON p.icd_code = d.icd_code 
     AND p.icd_version = d.icd_version
-GROUP BY p.subject_id, p.hadm_id;
+GROUP BY p.subject_id, p.hadm_id
+-- FILTER: Only keep hadm_id with at least one procedure
+HAVING COUNT(*) > 0;
 
 -- Step 3: Prescriptions - RAW nested structure
 CREATE OR REPLACE TABLE prescriptions_raw_agg AS
@@ -101,7 +105,9 @@ SELECT
     ) as prescriptions_raw
 FROM rx_cleaned
 WHERE starttime IS NOT NULL
-GROUP BY subject_id, hadm_id;
+GROUP BY subject_id, hadm_id
+-- FILTER: Only keep hadm_id with at least one prescription
+HAVING COUNT(*) > 0;
 
 -- Step 4: Prescriptions - ENGINEERED features
 CREATE OR REPLACE TABLE prescriptions_features AS
@@ -143,9 +149,12 @@ SELECT
 
 FROM rx_cleaned
 WHERE starttime IS NOT NULL
-GROUP BY subject_id, hadm_id;
+GROUP BY subject_id, hadm_id
+-- FILTER: Only keep hadm_id with at least one prescription
+HAVING COUNT(*) > 0;
 
 -- Step 5: FINAL TABLE - Both raw + engineered (REFINED join pattern)
+-- NOW WITH FILTERING: Only include hadm_id that have BOTH procedures AND prescriptions
 CREATE OR REPLACE TABLE cdss_treatment AS
 SELECT 
     COALESCE(proc.subject_id, rx.subject_id) as subject_id,
@@ -200,7 +209,7 @@ SELECT
     END as treatment_intensity_label
     
 FROM procedures_features proc
-FULL OUTER JOIN prescriptions_features rx 
+INNER JOIN prescriptions_features rx 
     ON proc.hadm_id = rx.hadm_id
     AND proc.subject_id = rx.subject_id
 -- REFINED: Join pattern (no correlated subqueries)
@@ -210,7 +219,7 @@ LEFT JOIN procedures_raw_agg proc_raw
 LEFT JOIN prescriptions_raw_agg rx_raw
     ON rx.hadm_id = rx_raw.hadm_id
     AND rx.subject_id = rx_raw.subject_id
-ORDER BY COALESCE(proc.hadm_id, rx.hadm_id);
+ORDER BY proc.hadm_id;
 
 -- Create indexes for performance
 CREATE INDEX IF NOT EXISTS idx_cdss_treatment_subject 

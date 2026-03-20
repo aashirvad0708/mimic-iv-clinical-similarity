@@ -1,0 +1,391 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MIMIC-IV CDSS: cdss_diagnoses</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 16px; }
+    h1 { font-size: 18px; margin: 0 0 8px 0; }
+    .meta { color: #555; margin-bottom: 12px; font-size: 12px; }
+    .wrap { border: 1px solid #ddd; border-radius: 8px; overflow: hidden; }
+    .table-container { overflow: auto; max-height: 75vh; }
+    table { border-collapse: collapse; width: max-content; min-width: 100%; }
+    thead th {
+      position: sticky; top: 0; z-index: 2;
+      background: #f6f8fa; border-bottom: 1px solid #ddd;
+      font-weight: 600;
+    }
+    th, td { padding: 8px 10px; border-bottom: 1px solid #eee; white-space: nowrap; }
+    tr:hover td { background: #fffbe6; }
+    .hint { margin-top: 10px; font-size: 12px; color: #555; }
+    code { background: #f6f8fa; padding: 2px 4px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+  <h1>MIMIC-IV CDSS: cdss_diagnoses</h1>
+  <div class="meta">Generated: 2026-03-20 17:17:40 • Rows shown: 25 • Columns: 11</div>
+  <div class="wrap">
+    <div class="table-container">
+      <table class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>hadm_id</th>
+      <th>subject_id</th>
+      <th>primary_diagnosis_icd</th>
+      <th>primary_diagnosis_title</th>
+      <th>primary_icd_3digit</th>
+      <th>diagnosis_count</th>
+      <th>unique_icd_count</th>
+      <th>diagnoses_icd_list</th>
+      <th>diagnoses_3digit_list</th>
+      <th>icd_version_mix</th>
+      <th>diagnosis_diversity_ratio</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>28657902</td>
+      <td>10409151</td>
+      <td>78079</td>
+      <td>Other malaise and fatigue</td>
+      <td>9_780</td>
+      <td>5</td>
+      <td>5</td>
+      <td>[4019, 78079, 41400, 72981, V4582]</td>
+      <td>[9_780, 9_414, 9_401, 9_729, 9_V45]</td>
+      <td>ICD9_only</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>26289646</td>
+      <td>10409718</td>
+      <td>T8132XA</td>
+      <td>Disruption of internal operation (surgical) wound, not elsewhere classified, initial encounter</td>
+      <td>10_T81</td>
+      <td>7</td>
+      <td>7</td>
+      <td>[T8132XA, Q872, M1712, Y838, Z23, L538, Y92009]</td>
+      <td>[10_Z23, 10_M17, 10_T81, 10_Q87, 10_Y83, 10_Y92, 10_L53]</td>
+      <td>ICD10_only</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>21265256</td>
+      <td>10414204</td>
+      <td>7944</td>
+      <td>Nonspecific abnormal results of function study of kidney</td>
+      <td>9_794</td>
+      <td>9</td>
+      <td>9</td>
+      <td>[7944, 40390, 78605, 2384, 70712, 42731, 4280, V5861, 5853]</td>
+      <td>[9_238, 9_786, 9_794, 9_427, 9_428, 9_V58, 9_707, 9_403, 9_585]</td>
+      <td>ICD9_only</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>24561003</td>
+      <td>10414650</td>
+      <td>O34211</td>
+      <td>Maternal care for low transverse scar from previous cesarean delivery</td>
+      <td>10_O34</td>
+      <td>6</td>
+      <td>6</td>
+      <td>[O34211, Z3A39, Z370, O99284, E039, O135]</td>
+      <td>[10_O34, 10_Z3A, 10_Z37, 10_O99, 10_E03, 10_O13]</td>
+      <td>ICD10_only</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>23229982</td>
+      <td>10415745</td>
+      <td>R42</td>
+      <td>Dizziness and giddiness</td>
+      <td>10_R42</td>
+      <td>7</td>
+      <td>7</td>
+      <td>[R42, I10, R001, H905, E785, G4700, Z20822]</td>
+      <td>[10_R00, 10_R42, 10_Z20, 10_H90, 10_I10, 10_E78, 10_G47]</td>
+      <td>ICD10_only</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>28505443</td>
+      <td>10415954</td>
+      <td>25080</td>
+      <td>Diabetes with other specified manifestations, type II or unspecified type, not stated as uncontrolled</td>
+      <td>9_250</td>
+      <td>17</td>
+      <td>17</td>
+      <td>[1101, 2720, 4439, 6826, 25080, 70719, 45981, 2859, 4019, 27801, 32723, 2411, V1251, V5861, V1204, V1254, V1582]</td>
+      <td>[9_272, 9_250, 9_682, 9_707, 9_401, 9_285, 9_459, 9_110, 9_278, 9_V12, 9_327, 9_443, 9_241, 9_V58, 9_V15]</td>
+      <td>ICD9_only</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>27052887</td>
+      <td>10417160</td>
+      <td>42833</td>
+      <td>Acute on chronic diastolic heart failure</td>
+      <td>9_428</td>
+      <td>17</td>
+      <td>17</td>
+      <td>[70703, 42833, 2761, 70723, 2724, 486, 25000, 42731, 496, 28860, 4280, 40390, 5859, 4240, 3694, V4364, 79902]</td>
+      <td>[9_427, 9_428, 9_707, 9_V43, 9_288, 9_496, 9_486, 9_250, 9_276, 9_272, 9_403, 9_585, 9_424, 9_369, 9_799]</td>
+      <td>ICD9_only</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>27366567</td>
+      <td>10417172</td>
+      <td>T80211A</td>
+      <td>Bloodstream infection due to central venous catheter, initial encounter</td>
+      <td>10_T80</td>
+      <td>22</td>
+      <td>22</td>
+      <td>[T80211A, F4002, Y92019, M4624, Y848, R7881, D6859, K912, T82514A, Z7901, B957, Z86718, D509, Z66, Z86711, I10, M797, R001, R600, Z9884, G4733, Y92230]</td>
+      <td>[10_Y92, 10_T80, 10_M46, 10_Y84, 10_I10, 10_R78, 10_D68, 10_T82, 10_K91, 10_B95, 10_Z86, 10_Z66, 10_D50, 10_F40, 10_M79, 10_R00, 10_R60, 10_Z98, 10_G47, 10_Z79]</td>
+      <td>ICD10_only</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>28702178</td>
+      <td>10418785</td>
+      <td>I671</td>
+      <td>Cerebral aneurysm, nonruptured</td>
+      <td>10_I67</td>
+      <td>4</td>
+      <td>4</td>
+      <td>[E039, I671, G4733, K219]</td>
+      <td>[10_I67, 10_E03, 10_K21, 10_G47]</td>
+      <td>ICD10_only</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>25240339</td>
+      <td>10420821</td>
+      <td>78659</td>
+      <td>Other chest pain</td>
+      <td>9_786</td>
+      <td>15</td>
+      <td>15</td>
+      <td>[4370, 78659, 412, 40390, V4501, 5859, 29040, 41401, V4582, 2809, 72402, 25000, 311, V1582, 2449]</td>
+      <td>[9_786, 9_414, 9_403, 9_585, 9_290, 9_412, 9_437, 9_V45, 9_280, 9_250, 9_311, 9_V15, 9_244, 9_724]</td>
+      <td>ICD9_only</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>26255706</td>
+      <td>10421309</td>
+      <td>N99521</td>
+      <td>Infection of incontinent external stoma of urinary tract</td>
+      <td>10_N99</td>
+      <td>13</td>
+      <td>13</td>
+      <td>[B952, N99521, E43, B965, Z681, Y731, A419, N390, C495, C787, Z8546, Y929, E119]</td>
+      <td>[10_B95, 10_N99, 10_E11, 10_N39, 10_E43, 10_A41, 10_C49, 10_C78, 10_Z68, 10_Z85, 10_B96, 10_Y73, 10_Y92]</td>
+      <td>ICD10_only</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>24508929</td>
+      <td>10422006</td>
+      <td>K433</td>
+      <td>Parastomal hernia with obstruction, without gangrene</td>
+      <td>10_K43</td>
+      <td>10</td>
+      <td>10</td>
+      <td>[K433, I10, E669, Z8541, Z86718, Z6841, Z85048, Z436, E119, Z7901]</td>
+      <td>[10_E11, 10_K43, 10_E66, 10_Z68, 10_Z43, 10_Z79, 10_Z85, 10_I10, 10_Z86]</td>
+      <td>ICD10_only</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>22148233</td>
+      <td>10423002</td>
+      <td>B59</td>
+      <td>Pneumocystosis</td>
+      <td>10_B59</td>
+      <td>23</td>
+      <td>23</td>
+      <td>[Z20828, B59, N179, E43, J9601, J704, D72828, T398X5A, D509, J45909, K523, T380X5A, Y92239, R079, F5109, R9431, R739, T368X5A, Z6820, T8182XA, Y848, K5900, E875]</td>
+      <td>[10_B59, 10_E43, 10_J96, 10_T39, 10_N17, 10_Z20, 10_Y84, 10_J70, 10_D50, 10_J45, 10_K52, 10_D72, 10_T38, 10_Y92, 10_R07, 10_Z68, 10_R73, 10_F51, 10_R94, 10_T36, 10_T81, 10_K59, 10_E87]</td>
+      <td>ICD10_only</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>21430544</td>
+      <td>10423089</td>
+      <td>K8580</td>
+      <td>Other acute pancreatitis without necrosis or infection</td>
+      <td>10_K85</td>
+      <td>16</td>
+      <td>16</td>
+      <td>[E669, D1803, Z794, K8580, E781, Z940, Z8349, Z8379, E1169, E1165, I10, G932, G4733, E785, I2720, R0902]</td>
+      <td>[10_K85, 10_I10, 10_D18, 10_Z94, 10_Z79, 10_E78, 10_E11, 10_Z83, 10_E66, 10_G93, 10_G47, 10_I27, 10_R09]</td>
+      <td>ICD10_only</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>22670764</td>
+      <td>10423918</td>
+      <td>N136</td>
+      <td>Pyonephrosis</td>
+      <td>10_N13</td>
+      <td>10</td>
+      <td>10</td>
+      <td>[N210, N136, N138, N323, B9620, N179, K219, Z20828, N401, Z87442]</td>
+      <td>[10_Z87, 10_N13, 10_N21, 10_B96, 10_N40, 10_N17, 10_N32, 10_K21, 10_Z20]</td>
+      <td>ICD10_only</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>24516318</td>
+      <td>10424689</td>
+      <td>I480</td>
+      <td>Paroxysmal atrial fibrillation</td>
+      <td>10_I48</td>
+      <td>17</td>
+      <td>17</td>
+      <td>[I480, E785, J449, I2510, Z85820, Z955, Z7902, G4733, N179, K219, I10, F329, Z87891, I252, E291, G8929, M545]</td>
+      <td>[10_I48, 10_E29, 10_E78, 10_G47, 10_Z95, 10_I25, 10_J44, 10_N17, 10_Z79, 10_F32, 10_I10, 10_Z87, 10_G89, 10_M54, 10_K21, 10_Z85]</td>
+      <td>ICD10_only</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>20818590</td>
+      <td>10424695</td>
+      <td>O99344</td>
+      <td>Other mental disorders complicating childbirth</td>
+      <td>10_O99</td>
+      <td>7</td>
+      <td>7</td>
+      <td>[Z20822, O700, Z370, O99344, F340, Z3A40, O660]</td>
+      <td>[10_Z20, 10_O99, 10_Z37, 10_F34, 10_Z3A, 10_O66, 10_O70]</td>
+      <td>ICD10_only</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>21302361</td>
+      <td>10425960</td>
+      <td>S72141A</td>
+      <td>Displaced intertrochanteric fracture of right femur, initial encounter for closed fracture</td>
+      <td>10_S72</td>
+      <td>10</td>
+      <td>10</td>
+      <td>[S72141A, D62, E039, G20, F05, D696, G4733, I10, W19XXXA, Z20828]</td>
+      <td>[10_S72, 10_D69, 10_F05, 10_D62, 10_G47, 10_G20, 10_I10, 10_E03, 10_W19, 10_Z20]</td>
+      <td>ICD10_only</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>26128447</td>
+      <td>10426280</td>
+      <td>O8613</td>
+      <td>Vaginitis following delivery</td>
+      <td>10_O86</td>
+      <td>4</td>
+      <td>4</td>
+      <td>[O8613, O99285, O135, N898]</td>
+      <td>[10_N89, 10_O86, 10_O99, 10_O13]</td>
+      <td>ICD10_only</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>22014485</td>
+      <td>10427107</td>
+      <td>M84551A</td>
+      <td>Pathological fracture in neoplastic disease, right femur, initial encounter for fracture</td>
+      <td>10_M84</td>
+      <td>21</td>
+      <td>21</td>
+      <td>[T8119XA, I82621, M84551A, D61810, T82868A, I10, G92, C8338, M9711XA, N1330, D62, N179, T451X5A, Z86711, Z791, Z96653, Z9181, F329, Z20822, Y848, Y92230]</td>
+      <td>[10_T82, 10_G92, 10_M84, 10_Z91, 10_T45, 10_I82, 10_Y92, 10_M97, 10_C83, 10_D61, 10_T81, 10_N13, 10_D62, 10_Z86, 10_N17, 10_Z79, 10_Z96, 10_F32, 10_I10, 10_Y84, 10_Z20]</td>
+      <td>ICD10_only</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>22643945</td>
+      <td>10427326</td>
+      <td>F323</td>
+      <td>Major depressive disorder, single episode, severe with psychotic features</td>
+      <td>10_F32</td>
+      <td>5</td>
+      <td>5</td>
+      <td>[F323, R45851, G40909, Z20822, D649]</td>
+      <td>[10_Z20, 10_F32, 10_G40, 10_R45, 10_D64]</td>
+      <td>ICD10_only</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>23155878</td>
+      <td>10427545</td>
+      <td>64403</td>
+      <td>Threatened premature labor, antepartum condition or complication</td>
+      <td>9_644</td>
+      <td>7</td>
+      <td>7</td>
+      <td>[64973, 64403, 65963, V9103, 65103, 65703, 65583]</td>
+      <td>[9_644, 9_655, 9_V91, 9_649, 9_651, 9_659, 9_657]</td>
+      <td>ICD9_only</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>26195942</td>
+      <td>10427545</td>
+      <td>66411</td>
+      <td>Second-degree perineal laceration, delivered, with or without mention of antepartum condition</td>
+      <td>9_664</td>
+      <td>3</td>
+      <td>3</td>
+      <td>[66411, V270, 65951]</td>
+      <td>[9_659, 9_V27, 9_664]</td>
+      <td>ICD9_only</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>22155093</td>
+      <td>10427568</td>
+      <td>25000</td>
+      <td>Diabetes mellitus without mention of complication, type II or unspecified type, not stated as uncontrolled</td>
+      <td>9_250</td>
+      <td>5</td>
+      <td>5</td>
+      <td>[29650, 25000, V6284, 30000, V5867]</td>
+      <td>[9_300, 9_250, 9_296, 9_V62, 9_V58]</td>
+      <td>ICD9_only</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <td>27547969</td>
+      <td>10429881</td>
+      <td>0539</td>
+      <td>Herpes zoster without mention of complication</td>
+      <td>9_053</td>
+      <td>1</td>
+      <td>1</td>
+      <td>[0539]</td>
+      <td>[9_053]</td>
+      <td>ICD9_only</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+  </div>
+  <div class="hint">Tip: horizontal scroll for wide tables. Click any cell to copy its value.</div>
+  <script>
+    // Click-to-copy cell contents (lightweight)
+    document.addEventListener('click', async (e) => {
+      const td = e.target.closest('td');
+      if (!td) return;
+      const text = td.innerText;
+      try {
+        await navigator.clipboard.writeText(text);
+        td.style.outline = "2px solid #2da44e";
+        setTimeout(() => td.style.outline = "", 350);
+      } catch (_) {}
+    });
+    </script>
+</body>
+</html>

@@ -6,7 +6,15 @@ import webbrowser
 from datetime import datetime
 
 HOSP_PATH = "mimic-iv-3.1/hosp"
+DB_PATH = "mimic.db"
 OUT_DIR = "previews"
+
+# CDSS preprocessed tables (use actual table names from mimic.db)
+cdss_tables = [
+    "cdss_base",
+    "cdss_diagnoses",
+    "cdss_treatment",
+]
 
 important_tables = [
     #"patients.csv.gz",
@@ -26,14 +34,29 @@ con = duckdb.connect()
 con.execute("SET preserve_insertion_order=true")
 con.execute("SET pandas_analyze_sample=100000")
 
+# Attach mimic.db once at startup
+try:
+    con.execute(f"ATTACH DATABASE '{DB_PATH}' AS mimic_db")
+except Exception:
+    pass  # Already attached
+
 def terminal_width(default=120) -> int:
     try:
         return shutil.get_terminal_size((default, 20)).columns
     except Exception:
         return default
 
-def print_schema(file_path: str) -> pd.DataFrame:
-    cols = con.execute(f"DESCRIBE SELECT * FROM '{file_path}'").df()
+def print_schema(query_source: str, is_file: bool = True) -> pd.DataFrame:
+    """
+    Print schema for either a file or a table.
+    is_file=True: query_source is a file path
+    is_file=False: query_source is a table name (may need quoting)
+    """
+    if is_file:
+        cols = con.execute(f"DESCRIBE SELECT * FROM '{query_source}'").df()
+    else:
+        # Quote table name in case it starts with numbers or has special chars
+        cols = con.execute(f"DESCRIBE {query_source}").df()
     print("\nCOLUMNS:")
     print(cols.to_string(index=False))
     return cols
@@ -41,13 +64,29 @@ def print_schema(file_path: str) -> pd.DataFrame:
 def id_columns(columns_df: pd.DataFrame) -> list[str]:
     return [c for c in columns_df["column_name"].tolist() if c.lower().endswith("id")]
 
-def print_quick_info(file_path: str):
-    rows = con.execute(f"SELECT COUNT(*) FROM '{file_path}'").fetchone()[0]
+def print_quick_info(query_source: str, is_file: bool = True):
+    """
+    Print quick info for either a file or a table.
+    is_file=True: query_source is a file path
+    is_file=False: query_source is a table name
+    """
+    if is_file:
+        rows = con.execute(f"SELECT COUNT(*) FROM '{query_source}'").fetchone()[0]
+    else:
+        rows = con.execute(f"SELECT COUNT(*) FROM {query_source}").fetchone()[0]
     print("\nQUICK INFO:")
     print("Total rows:", rows)
 
-def sample_df(file_path: str, limit: int = 25) -> pd.DataFrame:
-    return con.execute(f"SELECT * FROM '{file_path}' LIMIT {limit}").df()
+def sample_df(query_source: str, limit: int = 25, is_file: bool = True) -> pd.DataFrame:
+    """
+    Sample data from either a file or a table.
+    is_file=True: query_source is a file path
+    is_file=False: query_source is a table name
+    """
+    if is_file:
+        return con.execute(f"SELECT * FROM '{query_source}' LIMIT {limit}").df()
+    else:
+        return con.execute(f"SELECT * FROM {query_source} LIMIT {limit}").df()
 
 def df_to_interactive_html(df: pd.DataFrame, title: str) -> str:
     # Escape-less HTML from pandas, plus a little CSS/JS for usability
@@ -127,15 +166,15 @@ def preview_table(file_path: str, sample_limit: int = 25, open_html: bool = True
     print("=" * 80)
 
     try:
-        cols = print_schema(file_path)
+        cols = print_schema(file_path, is_file=True)
 
-        df = sample_df(file_path, limit=sample_limit)
+        df = sample_df(file_path, limit=sample_limit, is_file=True)
 
         # Keep terminal output minimal & readable:
         print("\nIDENTIFIER COLUMNS:")
         print(id_columns(cols))
 
-        print_quick_info(file_path)
+        print_quick_info(file_path, is_file=True)
 
         # Interactive HTML preview:
         out_file = os.path.join(OUT_DIR, base.replace(".csv.gz", "") + ".sample.html")
@@ -217,6 +256,39 @@ def top_labs_preview(limit: int = 50, open_html: bool = True):
     if open_html:
         open_in_browser(out_file)
 
+def preview_cdss_table(table_name: str, sample_limit: int = 25, open_html: bool = True):
+    """Preview CDSS tables from mimic.db"""
+    print("\n" + "=" * 80)
+    print(f"TABLE: {table_name}")
+    print("=" * 80)
+
+    try:
+        # Use qualified table name with database prefix
+        qualified_table = f"mimic_db.{table_name}"
+        
+        cols = print_schema(qualified_table, is_file=False)
+
+        df = sample_df(qualified_table, limit=sample_limit, is_file=False)
+
+        # Keep terminal output minimal & readable:
+        print("\nIDENTIFIER COLUMNS:")
+        print(id_columns(cols))
+
+        print_quick_info(qualified_table, is_file=False)
+
+        # Interactive HTML preview:
+        out_file = os.path.join(OUT_DIR, f"{table_name}.sample.html")
+        write_html_preview(df, out_file, title=f"MIMIC-IV CDSS: {table_name}")
+
+        print("\nHTML PREVIEW:")
+        print(f"Wrote: {out_file}")
+
+        if open_html:
+            open_in_browser(out_file)
+
+    except Exception as e:
+        print(f"Error previewing {table_name}:", e)
+
 if __name__ == "__main__":
     # Set False if you don't want it to auto-open a browser tab each time.
     AUTO_OPEN = True
@@ -225,4 +297,7 @@ if __name__ == "__main__":
         full_path = os.path.join(HOSP_PATH, table)
         preview_table(full_path, sample_limit=25, open_html=AUTO_OPEN)
 
-    top_labs_preview(limit=50, open_html=AUTO_OPEN)
+    for table in cdss_tables:
+        preview_cdss_table(table, sample_limit=25, open_html=AUTO_OPEN)
+
+    #top_labs_preview(limit=50, open_html=AUTO_OPEN)
